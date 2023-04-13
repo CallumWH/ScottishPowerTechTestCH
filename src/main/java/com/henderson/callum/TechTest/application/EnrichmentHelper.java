@@ -18,7 +18,7 @@ public class EnrichmentHelper {
         return gasReadings;
     }
 
-    public List<GasReadings> EnrichLastRead(List<GasReadings> gasReadings) {
+    private List<GasReadings> EnrichLastRead(List<GasReadings> gasReadings) {
         gasReadings.stream().filter(g -> g.getPeriodSinceLastRead() == null).forEach(g -> {
             Optional<GasReadings> mostRecent = getMostRecentGasReading(gasReadings, g);
             if (mostRecent.isPresent()) {
@@ -30,7 +30,7 @@ public class EnrichmentHelper {
         return gasReadings;
     }
 
-    public List<GasReadings> EnrichGasUsageSinceLastRead(List<GasReadings> gasReadings) {
+    private List<GasReadings> EnrichGasUsageSinceLastRead(List<GasReadings> gasReadings) {
         gasReadings.stream().filter(g -> g.getUsageSinceLastRead() == null).forEach(g -> {
             Optional<GasReadings> mostRecent = getMostRecentGasReading(gasReadings, g);
             if (mostRecent.isPresent()) {
@@ -42,7 +42,7 @@ public class EnrichmentHelper {
         return gasReadings;
     }
 
-    public List<GasReadings> EnrichGasAverageDailyUsage(List<GasReadings> gasReadings) {
+    private List<GasReadings> EnrichGasAverageDailyUsage(List<GasReadings> gasReadings) {
         gasReadings.stream().filter(g -> g.getAvgDailyUsage() == null).forEach(g -> {
             if (g.getPeriodSinceLastRead() != 0l) {
                 g.setAvgDailyUsage(g.getUsageSinceLastRead() / g.getPeriodSinceLastRead());
@@ -53,7 +53,7 @@ public class EnrichmentHelper {
         return gasReadings;
     }
 
-    public Optional<GasReadings> getMostRecentGasReading(List<GasReadings> gasReadings, GasReadings toEnrich) {
+    private Optional<GasReadings> getMostRecentGasReading(List<GasReadings> gasReadings, GasReadings toEnrich) {
         return gasReadings.stream().filter(g -> g.getDate().isBefore(toEnrich.getDate())).max(Comparator.comparing(g -> g.getDate()));
     }
 
@@ -64,7 +64,7 @@ public class EnrichmentHelper {
         return elecReadings;
     }
 
-    public List<ElecReadings> EnrichElecLastRead(List<ElecReadings> elecReadings) {
+    private List<ElecReadings> EnrichElecLastRead(List<ElecReadings> elecReadings) {
         elecReadings.stream().filter(e -> e.getPeriodSinceLastRead() == null).forEach(e -> {
             Optional<ElecReadings> mostRecent = getMostRecentElecReading(elecReadings, e);
             if (mostRecent.isPresent()) {
@@ -76,7 +76,7 @@ public class EnrichmentHelper {
         return elecReadings;
     }
 
-    public List<ElecReadings> EnrichElecUsageSinceLastRead(List<ElecReadings> elecReadings) {
+    private List<ElecReadings> EnrichElecUsageSinceLastRead(List<ElecReadings> elecReadings) {
         elecReadings.stream().filter(e -> e.getUsageSinceLastRead() == null).forEach(e -> {
             Optional<ElecReadings> mostRecent = getMostRecentElecReading(elecReadings, e);
             if (mostRecent.isPresent()) {
@@ -88,7 +88,7 @@ public class EnrichmentHelper {
         return elecReadings;
     }
 
-    public List<ElecReadings> EnrichElecAverageDailyUsage(List<ElecReadings> elecReadings) {
+    private List<ElecReadings> EnrichElecAverageDailyUsage(List<ElecReadings> elecReadings) {
         elecReadings.stream().filter(e -> e.getAvgDailyUsage() == null).forEach(e -> {
             if (e.getPeriodSinceLastRead() != 0l) {
                 e.setAvgDailyUsage(e.getUsageSinceLastRead() / e.getPeriodSinceLastRead());
@@ -99,7 +99,7 @@ public class EnrichmentHelper {
         return elecReadings;
     }
 
-    public Optional<ElecReadings> getMostRecentElecReading(List<ElecReadings> elecReadings, ElecReadings toEnrich) {
+    private Optional<ElecReadings> getMostRecentElecReading(List<ElecReadings> elecReadings, ElecReadings toEnrich) {
         return elecReadings.stream().filter(e -> e.getDate().isBefore(toEnrich.getDate())).max(Comparator.comparing(g -> g.getDate()));
     }
 }

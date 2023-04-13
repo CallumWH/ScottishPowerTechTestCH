@@ -32,12 +32,6 @@ public class TechTestService {
         }
     }
 
-    @GetMapping(value = "test")
-    public ResponseEntity<HttpStatus> testEndpoint() {
-        //readingsApplication.getMostRecentReading(Long.valueOf(42311324));
-        return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-    }
-
     @PostMapping(value = "api/smart/reads", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ReadingsResponse> createReadings(@RequestBody ReadingsRequest readingsRequest) {
         Readings response = null;

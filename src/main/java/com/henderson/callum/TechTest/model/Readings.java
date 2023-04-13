@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -21,8 +22,10 @@ public class Readings {
     private Long accountId;
 
     @ElementCollection
-    private List<GasReadings> gasReadings;
+    @Builder.Default
+    private List<GasReadings> gasReadings = new ArrayList<>();
 
     @ElementCollection
-    private List<ElecReadings> elecReadings;
+    @Builder.Default
+    private List<ElecReadings> elecReadings = new ArrayList<>();
 }

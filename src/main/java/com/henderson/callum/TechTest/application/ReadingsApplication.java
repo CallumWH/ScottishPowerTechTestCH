@@ -7,6 +7,7 @@ import com.henderson.callum.TechTest.model.Readings;
 import com.henderson.callum.TechTest.repository.ReadingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -22,15 +23,12 @@ public class ReadingsApplication {
     @Autowired
     private EnrichmentHelper enrichmentHelper;
 
+    @Transactional
     public Optional<Readings> getReadingsByAccountNumber(Long accountId) {
-        Optional<Readings> reading = readingsRepository.findByAccountId(accountId);
-        if (reading.isPresent()) {
-
-        }
-
         return readingsRepository.findByAccountId(accountId);
     }
 
+    @Transactional
     public Readings addReadings(Readings readings) throws DuplicateReadingException {
         verifyDuplicate(readings);
         Optional<Readings> oldReadingsOptional = readingsRepository.findByAccountId(readings.getAccountId());
@@ -41,6 +39,7 @@ public class ReadingsApplication {
             readings = oldReadings;
 
             readings.setGasReadings(enrichmentHelper.enrichGasReadings(readings.getGasReadings()));
+            readings.setElecReadings(enrichmentHelper.enrichElecReadings(readings.getElecReadings()));
         }
         return readingsRepository.save(readings);
     }
@@ -77,6 +76,7 @@ public class ReadingsApplication {
     }
 
     @PostConstruct
+    @Transactional
     public void addData() {
 
         GasReadings gasReadings = GasReadings.builder().id(Long.valueOf(4231)).reading(Long.valueOf(42314231)).date(LocalDate.now()).meterId(Long.valueOf(42311324)).build();
